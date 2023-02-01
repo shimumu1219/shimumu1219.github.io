@@ -1,0 +1,251 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-flow: column;
+  width: 120rem;
+  height:58rem;
+  background-color: rgb(47, 46, 46);
+  overflow-x: hidden;
+}
+#errTooltip {
+  display: none;
+  position: absolute;
+  width: 20%;
+  /* height: 20%; */
+  border: 1px solid white;
+  color: white;
+  background-color: rgb(33, 33, 33);
+  font-size: 16px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+header {
+  /* padding-top: 1%; */
+  display: flex;
+  justify-content:center;
+  width: 100%;
+  height: 7.5%;
+  align-items:flex-end;
+  color: white;
+  z-index: 1;
+} 
+.table {
+  display: flex;
+  justify-content:center;
+
+  top : 2rem;
+  width: 45%;
+  height: 3.5rem;
+  font-size: 14px;
+
+}
+.tableYear {
+  flex: 5;
+  width: 100%;
+  border-radius: 5%;
+ 
+}
+
+.homeList1 {
+  display: flex;
+  justify-content:center;
+  align-items:center;
+  width: 100%;
+  font-size: 12px;
+  height: 3.5rem;
+  font-weight: 700;
+}
+.tableYearList {
+  display: none;
+  justify-content:center;
+  align-items:center;
+  background-color: rgb(155,155,155);
+  opacity: 0.9;
+  width: 100%;
+  height: 3.5rem;
+  font-size: 12px;
+}
+.tableYearList :hover {
+  background-color: white;
+}
+
+.tableCategory {
+  flex : 5;
+  width: 100%;
+}
+
+.homeList2 {
+  display: flex;
+  justify-content:center;
+  align-items:center;
+  width: 100%;
+  height: 3.5rem;
+  font-size: 12px;
+  font-weight: 700;
+}
+.tableCategoryList {
+  display: none;
+  justify-content:center;
+  align-items:center;
+  background-color: rgb(155,155,155);
+  opacity: 0.9;
+  width: 100%;
+  height: 3.5rem;
+  font-size: 12px;
+}
+.tableCategoryList :hover {
+  background-color: white;
+}
+.tableTitle {
+  flex : 5;
+  width: 100%;
+}
+
+.homeList3 {
+  display: flex;
+  justify-content:center;
+  align-items:center;
+  width: 100%;
+  height: 3.5rem;
+  font-size: 12px;
+  font-weight: 700;
+}
+.tableTitleList {
+  display: flex;
+  justify-content:center;
+  align-items:center;
+  background-color: rgb(155,155,155);
+  opacity: 0.9;
+  width: 100%;
+  height: 3.5rem;
+  font-size: 12px;
+}
+.tableTitleList :hover {
+  background-color: white;
+}
+main{
+  position: relative;
+  width: 100%;
+  height: 85%;
+}
+
+
+.test {
+  fill : red;
+  z-index: 2;
+}
+
+footer{
+  display: flex;
+  flex-flow: column;
+  justify-content : center ;
+  align-items:center;
+  width: 100%;
+  height: 5%;
+}
+#myName {
+  display: flex;
+  justify-content : center ;
+  border: 1px solid black;
+  color: white;
+  height: 50%;
+  width: 50%;
+}
+#dataFrom {
+  color: white;
+  height: 10%;
+  width: 50%;
+}
+
+#test{
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: blue;
+  
+}
+.clockDate {
+  text-align: center;
+  /* color: white; */
+  display: block;
+}
+.clockDate :hover {
+  cursor:pointer
+}
+p {
+  pointer-events: none
+}
+#clock{
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+#tooltip {
+  display: none;
+  position: absolute;
+  width: 20%;
+  padding-left: 8px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  /* height: 20%; */
+  border: .5px solid white;
+  color: white;
+  background-color: rgb(33, 33, 33);
+  font-size: 12px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+#detailedInformation{
+
+  width: 100%;
+  height: 100%;
+  display: none;
+  border-radius: 10%;
+
+}
+#beijing {
+  position: absolute ;
+  width : 100% ;
+  object-fit: cover;
+  z-index: 0;
+}
+#beijing2 {
+  position: absolute ;
+  width : 100% ;
+  object-fit: cover;
+  z-index: -1;
+}
+.button {
+  display: none;
+}
+
+#backButton{
+  position: absolute;
+  width: 13%;
+  height: 4%;
+  bottom:3%;
+  right :43%;
+  color:white;
+  font-size: 16px;
+  font-weight: 700;
+  border: 1px solid white;
+}
+#backButton:hover{
+  cursor: pointer;
+  color:black;
+  background-color: white;
+}
+#backButton div{
+  display: flex;
+  height: 100%;
+  align-items:center;
+  justify-content:center;
+ 
+}

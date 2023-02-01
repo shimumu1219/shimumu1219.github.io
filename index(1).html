@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=yes">
+  <title>Document</title>
+  <link  href="./index.css" type="text/css" rel="stylesheet"/>
+  <script src="./d3.min.js"></script>
+  <script src="./setRem.js"></script>
+  <script src="./data.js"></script>
+  <script src="./table.js"></script>
+  <script src="./tooltip.js"></script>
+  <script src="detailedInformation.js"></script>
+  <script src="./tool.js"></script>
+  <script src="./animation.js"></script>
+  <style>
+  </style>
+</head>
+<body>
+  <div ><img  id="beijing2" src="./beijing2.png">
+  <img id="beijing" src="./beijing.png"></div>
+  <div id="errTooltip"></div>
+  <header>
+    <div class="table">
+      <div class="tableYear">
+        <div class="homeList1"><p class="pYear">--YEAR--</p></div>
+      </div>
+      <div class="tableCategory">
+        <div class="homeList2"><p class="pCategory">--Category--</p></div>
+      </div>
+      <div class="tableTitle">
+        <div class="homeList3"><p  class="pTitle">--Sub-category--</p></div>
+      </div>
+    </div>
+  </header>
+  <main>
+    <div class="clockDate"></div>
+    <div id="tooltip"></div>
+    <div id="clock">
+      <svg id="home" width="100%" height="100%">
+        <!-- <polygon points="0,100,130,0,0,130" fill="none" stroke="blue" stroke-width="2"></polygon> -->
+      </svg>
+    </div>
+    <div id="detailedInformation">
+      <!-- <svg id="detailed" width="100%" height="100%"></svg> -->
+   
+    </div>
+  </main>
+  <footer>
+    <div class="button">
+      <div id="backButton"><div><div>Back To Main Page</div></div>
+    </div>
+    </div>
+  </footer>
+  <script type="text/javascript">
+
+
+
+    const init = () => {
+      
+      const width = document.querySelector('main').clientWidth;
+      const height = document.querySelector('main').clientHeight;
+      let angleKey = null
+      const svg = d3.select('#home');
+      const clockRing = svg.append('circle')
+      .attr('cx',`${width*0.5}`)
+      .attr('cy',`${height*0.5}`)
+      .attr('r',`${height*0.425}`)
+      .attr('stroke','white')
+      .attr('class','clockRing')
+      .attr('stroke-width',1)
+      .attr('fill','none')
+
+      svg.append('circle')
+      .attr('cx',`${width*0.5}`)
+      .attr('cy',`${height*0.5}`)
+      .attr('r',`${height*0.179}`)
+      .attr('stroke','white')
+      .attr('class','clockRing')
+      .attr('stroke-width',.5)
+      .attr('fill','none')
+      .attr('stroke-dasharray','15 15')
+      .attr('opacity','0.5')
+
+      svg.append('text')
+      .attr('x',`${width*0.5 - width*0.003}`)
+      .attr('y',`${height*0.5 - height*0.179 }`)
+      .text('25%')
+      .attr('fill','white')
+      .attr('opacity','0.5')
+      .attr('stroke-width',.5)
+      .attr('font-size','10')
+      svg.append('text')
+      .attr('x',`${width*0.5 - width*0.003}`)
+      .attr('y',`${height*0.5 - height*0.33 }`)
+      .text('50%')
+      .attr('fill','white')
+      .attr('opacity','0.5')
+      .attr('stroke-width',.5)
+      .attr('font-size','10')
+
+      svg.append('polygon')
+      .attr('points',`${width*0.5},${height*0.5},${width*0.508},${height*0.512},${width*0.492},${height*0.512}`)
+      .attr('fill','white')
+      .attr('transform',`translate(0 ${-height*0.415}) `)
+    
+    
+    
+      svg.append('line')
+      .attr('x1',`${width*0.18}`)
+      .attr('y1','0')
+      .attr('x2',`${width*0.82}`)
+      .attr('y2','0')
+      .attr('stroke','white')
+      
+
+      const footG = svg.append('g').attr('class','footArc')
+      const gArc = svg.append('g').attr('class','gArc')
+      const getDateRegion = () => { 
+
+        const clockDate = document.querySelector('.clockDate')
+        const getYear = (d,i) => {
+      
+          const angle = Math.PI / 180 * 36 * i;
+          const r = `${height*0.43 + 13}`
+          const x = r * Math.sin(angle);
+          const resX =  Math.round(x * 100) / 100
+          const y = r * Math.cos(angle);
+          const resY =  Math.round(y * 100) / 100
+          const deg = i * 36
+          const w = width * 0.05
+          const h = w * 0.5
+          const div = document.createElement('div')
+          div.style.width = `${w}px`;
+          div.style.height = `${h}px`;
+          div.style.position = 'absolute'
+          div.style.left = `${width/2 - w/2}px`
+          div.style.top = `${height/2 - h/2}px`
+          div.style.transform = `translate(${resX}px,${-resY}px) rotate(${deg}deg)`
+          div.style.lineHeight = `${h}px`
+          div.style.fontSize = `${w * 0.2}px`
+          div.style.fontWeight = 'bold'
+          div.innerHTML = `<p>${d}</p>` 
+          if(i===0){
+            div.style.color = 'white'
+          }
+          clockDate.appendChild(div)
+  
+        }
+        dateYear.map((d,i) => getYear(d,i))
+
+          clockDate.addEventListener('click',function(e){   
+            const testing = () => { return e.target.style.color ==='white'  }
+            if(testing()){
+              return 
+            }
+            const res = clockDate.querySelectorAll('div')
+            for(let i = 0 ; i < res.length ; i ++){
+              res[i].style.color = 'black'
+            }
+            e.target.style.color = 'white'
+
+           
+          })
+    
+        const callback = () => {
+          const res = clockDate.querySelectorAll('div')
+          for( let i = 0 ; i < res.length ; i ++ ){
+            const testing = res[i].style.color
+            if(testing === 'white'){
+            const time = res[i].childNodes[0].innerHTML
+            const angle = Math.PI / 180 * 36 * i;
+            const r = `${height*0.415}`
+            const x = r * Math.sin(angle);
+            const resX =  Math.round(x * 100) / 100
+            const y = r * Math.cos(angle);
+            const resY =  Math.round(y * 100) / 100
+            d3.select('polygon').attr('transform',`translate(${resX} ${-resY}) rotate(${36*i},${width*0.5} ${height*0.5})`)
+              return upData1(dataset,time)
+            }
+          }
+        }
+          const observer = new MutationObserver(callback);
+          const options = {
+          'attributes' : true,
+          'subtree' : true
+        }
+        observer.observe(clockDate, options)
+      }
+      getDateRegion()//生成表的日期刻度
+      const getTypeArc = () => {
+        const areaTypeArc  = (params,i) => {
+
+          const g = gArc.append('g').attr('class',`type${i}`)
+    
+          const k = numberType[params]
+          const startAngle = Math.PI / 180 * (k[0] - 1) * 7.2 ;
+          const endAngle =   Math.PI / 180 * 7.2 * (k[1]);
+          const angle = { startAngle : startAngle , endAngle : endAngle};
+          const arcPath = d3.arc() 
+          .innerRadius(`${height*0.38}`)
+          .outerRadius(`${height*0.39}`)
+          .padAngle(0.01); 
+          gArc.append('path')
+          .attr('d',arcPath(angle))
+          .attr('fill',d => colorType[params]  )
+          .attr('transform',`translate(${width*0.5},${height*0.5})`)
+          .attr('class',`type${i}`)
+          .on('click',function(d){
+            console.log(11111);
+          })
+
+         }   
+         Object.keys(numberType).map((d,i) => areaTypeArc(d,i))    
+      };
+     
+
+      const getDataArc =  (data,date) => {
+        const dataset  = data
+        const year = date;
+        const lastDate = +date-1
+        const setArc1 = (d,i,params) => {
+          const data = d
+        
+          const getInnerRadiusContent = () => {
+          const res =  d[date] / d[`${ lastDate}`] - 1;
+            if(d[date] == 0 || !d[date] || d[`${ lastDate}`] == 0 ||!d[`${ lastDate}`]){
+              return 0 
+            }else if(res>=0){
+              return res
+            } else {return -res}
+          } ;
+          data ?  innerRadiusContent = getInnerRadiusContent () : innerRadiusContent = 1 
+          const arcPath = d3.arc() 
+          .innerRadius(`${height*0.04 }`)
+          .outerRadius(`${height*0.041+height*.31*innerRadiusContent }`)
+          .padAngle(.01); 
+          
+          const k = numberType[params]
+          const startAngle = Math.PI / 180 * (k[0] - 1) * 7.2 + Math.PI / 180 * 7.2 * i ;
+          const endAngle =  startAngle +   Math.PI / 180 * 7.2 ;
+          const angle = { startAngle : startAngle , endAngle : endAngle };
+          return arcPath(angle)
+      };
+      const type = Object.keys(numberType)
+   
+      type.map((d,i) => createFootArc(d,i)) 
+      type.map((d,i) => createArc(d,i)) // 创建数据弧度
+    
+      function createArc (d,i){
+        const params = d
+        const newData = dataset.filter(d => d['type'] === params)
+        gArc.selectAll(`.type${i}0`)
+        .data(newData)
+        .append('path')
+        .attr('d',(d,i) => setArc1(d,i,params))
+        .attr('transform',`translate(${width*0.5},${height*0.5})`)
+        .attr('id',(d,i) => 'path'+d['name'])
+        .attr('class','dataPath')
+        .attr('fill',d => colorType[d['type']]); 
+        
+        const k = numberType[params]
+        const deg = (k[0] - 1) * 7.2 + 3.6
+    
+        gArc.selectAll(`.type${i}0`)
+        .data(newData)
+        .append('circle')
+        .attr('cx',`${width*0.5}`)
+        .attr('cy',`${height*0.5 -0.365*height}`)
+        .attr('r',`${height*0.007}`)
+        .attr('transform',function(d,i){
+          return `rotate(${deg + 7.2*i},${width*0.5} ${height*0.5})`
+        })
+        .attr('class','ball')
+        .attr('stroke',function(d,i){
+          const lastDate = +date-1
+          const res =  d[date]  - d[`${ lastDate}`]
+          if(d[date] == 0 || !d[date] || d[`${ lastDate}`] == 0 ||!d[`${ lastDate}`] ){
+            return 'white'
+          }
+        })
+        .attr('fill',function(d,i){
+          const lastDate = +date-1
+          const res =  d[date]  - d[`${ lastDate}`]
+          if(d[date] == 0 || !d[date] || d[`${ lastDate}`] == 0 ||!d[`${ lastDate}`] ){
+            return 'none'
+          }else if (res>0){
+            return 'white'
+          }else { 
+            return 'black'
+          }
+        })
+
+        
+      }  
+      function createFootArc (d,i){
+
+        const params = d
+        const newData = dataset.filter(d => d['type'] === params)
+        gArc.select(`.type${i}`).selectAll('hello')
+        .data(newData)
+        .enter()
+        .append('g')
+        .attr('class', function(d,k){
+          return `type${i}0`})
+        .on('mouseover',function(e,d,i){
+          const now = getNowYear()
+          e.target.style.cursor = 'pointer'
+          getTooltip(e,d,now)
+        })
+        .on('mouseleave',function(){
+          removeTooltip()
+        })
+        .on('click',function(e,d){
+          console.log(d);
+          jumpToInfo(d)
+        })
+        .append('path')
+        .attr('d',(d1,key) => setArc1(null,key,params))
+        .attr('transform',`translate(${width*0.5},${height*0.5})`)
+        .attr('class','footPath')
+        // .attr('fill','url(#grad1)')
+        .attr('fill','white')
+        .attr('opacity','.1'); 
+      }    
+    };
+
+      const upData1 = (data,date) => {
+      
+      const setArc = (i,d) => {
+        
+        const data = d
+        const getInnerRadiusContent = () => {
+          // console.log(1111111);
+        const lastDate = +date-1
+        const res =  d[date] / d[`${ lastDate}`] - 1;
+          if(d[date] == 0 || !d[date] || d[`${ lastDate}`] == 0 ||!d[`${ lastDate}`] ){
+            return 0
+          }else if(res>=0){
+            return res
+        } else {return -res}
+        } ;
+        data ?  innerRadiusContent = getInnerRadiusContent () : innerRadiusContent = 1 
+        const arcPath = d3.arc() 
+        .innerRadius(`${height*0.04 }`)
+        .outerRadius(`${height*0.0401+height*.31*innerRadiusContent * 2}`)
+        .padAngle(0.01); 
+        const startAngle =  Math.PI /180 * 7.2 * i
+        const endAngle = Math.PI /180 * 7.2 * (i + 1)
+        const angle = { startAngle : startAngle , endAngle : endAngle };
+        return arcPath(angle)
+      }
+        gArc.selectAll('.dataPath')
+        .data(data)
+        .transition()
+        .duration(1000)
+        .attr('d',(d,i) => setArc(i,d))
+        
+        gArc.selectAll('.ball')
+        .data(data)
+        .transition(1000)
+        .attr('stroke',function(d,i){
+          const lastDate = +date-1
+          const res =  d[date]  - d[`${ lastDate}`]
+          if(d[date] == 0 || !d[date] || d[`${ lastDate}`] == 0 ||!d[`${ lastDate}`] ){
+            return 'white'
+          }
+        })
+        .attr('fill',function(d,i){
+          const lastDate = +date-1
+          const res =  d[date]  - d[`${ lastDate}`]
+          if(d[date] == 0 || !d[date] || d[`${ lastDate}`] == 0 ||!d[`${ lastDate}`] ){
+            return 'none'
+          }else if (res>0){
+            return 'white'
+          }else { 
+            return 'black'
+          }
+        })
+
+      };
+ 
+      function jumpToInfo(params){
+        document.querySelector('#clock').style.display = 'none'
+        document.querySelector('#detailedInformation').style.display = 'flex'
+        document.querySelector('.clockDate').style.display = 'none'
+        getDetailedInformation(params)
+      }
+
+      function createOBTable(){
+        const table = document.querySelector('.table')
+        const observer1 = new MutationObserver(callback);
+          const options = {
+          'characterData' : true,
+          'subtree' : true,
+          'childList' : true,
+        }
+        observer1.observe(table, options)
+
+        function callback(record){
+          const res = record[0].target.className
+          const info = record[0].target.innerText
+          if(res === 'pYear'){
+            // 对所有date值进行检测，把对应值的颜色变为白色
+            const p = document.querySelector('.clockDate').querySelectorAll('p')
+            for(let i = 0 ; i < p.length ; i ++){
+              if(p[i].innerHTML === info){
+                p[i].parentNode.style.color = 'white'
+              }else {
+                p[i].parentNode.style.color = 'black'
+              }
+            }
+          }else if(res === 'pCategory'){
+            const change = () => {
+              // 判断是否为值是否为all
+              if(info==='All'){
+                const allDom = document.querySelector('.gArc').childNodes
+                for(let i = 0 ; i < allDom.length ; i ++){
+                  allDom[i].style.opacity = '1'
+                }}else{
+                  // 获取table中信息对应的type
+                  const set = Object.keys(numberType);
+                  const idx = set.findIndex(d => d === info)
+                  // 获取并更改对应的dom的style
+                  const allDom = document.querySelector('.gArc').childNodes
+                  for(let i = 0 ; i < allDom.length ; i ++){
+                    const testing = allDom[i].className.baseVal !== `type${idx}`
+                    if(testing){
+                      allDom[i].style.opacity = '.05'
+                    }else {
+                      allDom[i].style.opacity = '1'
+                    }
+                  }
+              }
+            }
+            change()
+          }
+        }  
+      }
+      function upInfoData(){
+        const testing = () => {
+          const res =  document.querySelector('#clock').style.display
+          if(res==='none'){
+            return '0'
+          } else{return '1'}
+        }
+        document.querySelector('.tableTitle').addEventListener('click',function(e){
+          const res = e.target.childNodes[0].innerText
+          if(res!=='--Sub-category--' && res!=='All' && res!=='--Sub-category--'){
+            if(testing()==='1'){
+              console.log('更新主页');
+              const data = dataset.find(d=>d['name']===res)
+              jumpToInfo(data)
+      
+            }else{
+                  const newData = dataset.find(d => d['name']===res)
+                  getDetailedInformation(newData)
+            }
+          }
+        })
+      }
+      getTypeArc() // 生成type区域
+      getDataArc(dataset,'2011') // 生成数据区域
+      setTable()  // 设置输入框
+      upData1(dataset,'2011') // 更新图表
+      animation()  // 创建动画效果
+      // createJump1() // 创建跳转按钮   
+      createOBTable() // 根据year 和 category 的值的改变更新图表
+      upInfoData() // 根据title更新图表
+      document.addEventListener('click',function(e){
+
+        if(e.target.id === 'home' || e.target.id === 'beijing'){
+          console.log(111111);
+          document.querySelector('.homeList2').querySelector('p').innerHTML = 'All'
+        }
+    
+      })
+    }; 
+    init()
+  </script>
+</body>
+</html>
